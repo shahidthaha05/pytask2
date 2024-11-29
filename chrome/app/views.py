@@ -84,3 +84,24 @@ def delete(req,pid):
     os.remove('media/'+og_path)
     data.delete()
     return redirect(home)
+
+
+
+
+
+# ---------------user--------------
+
+def register(req):
+    if req.method=='POST':
+        name=req.POST['name']
+        email=req.POST['email']
+        password=req.POST['password']
+        try:
+            data=User.objects.create_user(first_name=name,email=email,password=password,username=email)
+            data.save()
+            return redirect(chrome_login)
+        except:
+            messages.warning(req,'User already exists.')
+            return redirect(register)
+    else:
+        return render(req,'user/register.html')
